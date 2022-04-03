@@ -1,0 +1,1 @@
+ISO 639-1 is the standard for the shortcuts of languages names(ie Arabic => ar)

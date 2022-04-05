@@ -1,7 +1,7 @@
 <?php
 
   require 'src/App/I18n.php';
-  $i18n                     = new App\I18n(['en_GB', 'es']);
+  $i18n                     = new App\I18n(['en_US', 'en_GB', 'es']);
   list($subdomain, $domain) = explode(".", $_SERVER['HTTP_HOST'], 2);
 
   //   convert en_gb or en-gb from the browser to => en_GB what php needs
@@ -11,6 +11,8 @@
   print($i18n->getAcceptLocales());
 
   if ($lang == null) {
+    $lang = $this->getBestMatchFromHeader();
+    exit;
     $default = $i18n->getDefault();
     header("Location: http://" . $default . ".internationalization.test/");
     exit;

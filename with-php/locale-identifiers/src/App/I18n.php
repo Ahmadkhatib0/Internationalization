@@ -43,5 +43,32 @@ class I18n {
     asort($accepted_locales); //hightest locale preference is first
     return array_keys($accepted_locales);
   }
+
+  public function getBestMatchFromHeader() {
+    $accepted_locales = $this->getAcceptLocales();
+
+    array_walk($accepted_locales, function (&$locale) {
+      $locale = \Locale::canonicalize($locale);
+    });
+
+    // array walk will run this function each time for every element in an array
+    foreach ($accepted_locales as $locale) {
+      if (in_array($locale, $this->supported_locales)) {
+        return $locale;
+      }
+    }
+
+    foreach ($accepted_locales as $locale) {
+      $lang = substr($locale, 0, 2);
+
+      foreach ($this->supported_locales as $supported_locale) {
+        if (substr($supported_locale, 0, 2) == $lang) {
+          return $supported_locale;
+          // default to es if the browser sat to es-ES or es-MX
+        }
+      }
+    }
+    return null;
+  }
 }
 ?>

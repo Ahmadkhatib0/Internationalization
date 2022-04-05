@@ -7,6 +7,9 @@
   //   convert en_gb or en-gb from the browser to => en_GB what php needs
   $lang = $i18n->getBestMatch($subdomain);
 
+  $getBrowserLanguages = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+  print($i18n->getAcceptLocales());
+
   if ($lang == null) {
     $default = $i18n->getDefault();
     header("Location: http://" . $default . ".internationalization.test/");

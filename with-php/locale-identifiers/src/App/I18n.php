@@ -24,5 +24,24 @@ class I18n {
   public function getDefault() {
     return $this->supported_locales[0];
   }
+
+  public function getAcceptLocales() {
+
+    if ($_SERVER['HTTP_ACCEPT_LANGUAGE'] == '') {
+      return [];
+    };
+    $accepted_locales = [];
+    $parts            = explode(",", $_SERVER['HTTP_ACCEPT_LANGUAGE']);
+
+    foreach ($parts as $part) {
+      $locale_and_preference = explode(';q=', $part);
+      $locale                = trim($locale_and_preference[0]);
+      $preference            = $locale[1] ?? 1.0;
+      // (ie en-GB,es-ES;q=0.7,en;q=0.3)
+      $accepted_locales[$locale] = $preference;
+    }
+    asort($accepted_locales); //hightest locale preference is first
+    return array_keys($accepted_locales);
+  }
 }
 ?>

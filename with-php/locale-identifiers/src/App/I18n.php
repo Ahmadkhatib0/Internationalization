@@ -2,6 +2,9 @@
 
 namespace App;
 
+use Exception;
+use ipinfo\ipinfo\IPinfo;
+
 class I18n {
   private $supported_locales;
   public function __construct(array $supported_locales) {
@@ -21,11 +24,11 @@ class I18n {
     return null;
   }
 
-  public function getDefault() {
+  private function getDefault() {
     return $this->supported_locales[0];
   }
 
-  public function getAcceptLocales() {
+  private function getAcceptLocales() {
 
     if ($_SERVER['HTTP_ACCEPT_LANGUAGE'] == '') {
       return [];
@@ -44,7 +47,7 @@ class I18n {
     return array_keys($accepted_locales);
   }
 
-  public function getBestMatchFromHeader() {
+  private function getBestMatchFromHeader() {
     $accepted_locales = $this->getAcceptLocales();
 
     array_walk($accepted_locales, function (&$locale) {
@@ -69,6 +72,31 @@ class I18n {
       }
     }
     return null;
+  }
+
+  public function getLocaleForRedirect() {
+    $locale = $this->getBestMatchFromHeader();
+    if ($locale !== null) {
+      return $locale;
+    }
+
+    $locale = $this->getBestMatchFromIPAddress();
+    if (!$locale !== null) {
+      return $locale;
+    }
+  }
+
+  public function getBestMatchFromIPAddress() {
+    try {
+      $client  = new \ipinfo\ipinfo\IPinfo('your access token here');
+      $details = $client->getDetails($_SERVER['REMOTE_ADDR']);
+      //this will output the localhost, in dev
+      if (isset($details->country)) {
+        return $this->getBestMatch($details->country);
+      }
+    } catch (\ipinfo\ipinfo\IPinfoException $e) {
+      echo $e->getMessage($e);
+    }
   }
 }
 ?>

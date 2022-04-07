@@ -42,6 +42,12 @@
 
   $name  = "Dave";
   $count = 1;
+  $pi    = 3.144553;
+  setlocale(LC_ALL, $locale);
+  // setlocale(LC_ALL, "es_ES.UTF-8");linux
+
+  $formatter = new NumberFormatter($locale, NumberFormatter::DECIMAL);
+  $formatter->setAttribute(NumberFormatter::DECIMAL, 5); //DEFAULT IS 3
 ?>
 
 <!DOCTYPE html>
@@ -72,6 +78,10 @@
     <p> <?=sprintf($translator->ngettext("You have %d message", "You have %d messages", $count), $count)?> </p>
     <!-- ngettext will decide wither to use plural or singular, you need to include  -->
     <!-- the singular and plural message in poedit -->
+
+    <p> <?=$pi?> </p>
+    <!-- ABOVE first solution, bellow second solution  -->
+    <p> <?=$formatter->format($pi)?> </p>
 </body>
 
 </html>

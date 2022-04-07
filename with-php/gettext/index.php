@@ -1,7 +1,7 @@
 <?php
 
   require 'src/App/I18n.php';
-  require __DIR__ . '/vendor/autoload.php';
+  require 'vendor/autoload.php';
   $i18n                     = new App\I18n(['en_US', 'en_GB', 'es']);
   list($subdomain, $domain) = explode(".", $_SERVER['HTTP_HOST'], 2);
 
@@ -19,18 +19,23 @@
     exit;
   }
 
-  putenv("LANG=$locale");
-  putenv("LANGUAGE=$locale"); //these tow lines if gettext didn't work
+  // putenv("LANG=$locale");
+  // putenv("LANGUAGE=$locale"); //these tow lines if gettext didn't work
 
-  setLocale(LC_ALL, $locale); //SET locale that php will use
+  PhpMyAdmin\MoTranslator\Loader::loadFunctions();
+  // setLocale(LC_ALL, $locale); //SET locale that php will use
+  _setLocale(LC_ALL, $locale);
   $domain = "messages"; //this called translation domain
 
-  textdomain($domain); //this optional, because it's = messages by default
+  // textdomain($domain); //this optional, because it's = messages by default
+  _textdomain($domain);
 
-  bindtextdomain($domain, 'locales'); //tell gettext where translation messages are
+  // bindtextdomain($domain, 'locales'); //tell gettext where translation messages are
+  _bindtextdomain($domain, 'locales');
 
-  bind_textdomain_codeset($domain, 'UTF-8');
+  // bind_textdomain_codeset($domain, 'UTF-8');
 
+  _bind_textdomain_codeset($domain, 'UTF-8');
 ?>
 
 <!DOCTYPE html>
@@ -38,13 +43,18 @@
 
 <head>
     <meta charset="UTF-8">
-    <title> <?=gettext("Example")?> </title>
+    <!-- <title> <?=gettext("Example")?> </title> -->
+    <title> <?=__("Example")?> </title>
 </head>
 
 <body>
-    <h1><?=gettext('Home')?></h1>
-    <!-- <P> <?=gettext('HELLO AND WELCOME')?> </P> or with just _ -->
-    <P> <?=_('HELLO AND WELCOME')?> </P>
+    <!-- <h1><?=_('Home')?></h1> -->
+    <h1><?=__('Home')?></h1>
+
+    <!-- <P> <?=_('HELLO AND WELCOME')?> </P> or with just _ -->
+    <P> <?=__('HELLO AND WELCOME')?> </P>
+
+    <P> <?=__('Thank You')?> </P>
 </body>
 
 </html>

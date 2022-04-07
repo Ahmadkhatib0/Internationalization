@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2022-04-07 04:47+0300\n"
-"PO-Revision-Date: 2022-04-07 04:59+0300\n"
+"POT-Creation-Date: 2022-04-07 22:40+0300\n"
+"PO-Revision-Date: 2022-04-07 22:42+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -12,16 +12,21 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.0.1\n"
 "X-Poedit-Basepath: ../../..\n"
+"X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: index.php\n"
 
-#: index.php:28
+#: index.php:46 index.php:47
 msgid "Example"
 msgstr "Ejemplo"
 
-#: index.php:32
+#: index.php:51 index.php:52
 msgid "Home"
 msgstr "Inicio"
 
-#: index.php:33 index.php:34
+#: index.php:54 index.php:55
 msgid "HELLO AND WELCOME"
 msgstr "HOLA Y BIENVENIDOS"
+
+#: index.php:57
+msgid "Thank You"
+msgstr "Muchas gracias"

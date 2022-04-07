@@ -37,8 +37,11 @@
 
   // _bind_textdomain_codeset($domain, 'UTF-8');
 
-  $translator = new PhpMyAdmin\MoTranslator\Translator("locales/$locale.mo");
+  $translator = new PhpMyAdmin\MoTranslator\Translator("locales/$locale/LC_MESSAGES/messages.mo"); //or
+  // $translator = new PhpMyAdmin\MoTranslator\Translator("locales/$locale.mo");
 
+  $name  = "Dave";
+  $count = 1;
 ?>
 
 <!DOCTYPE html>
@@ -61,7 +64,14 @@
     <P> <?=$translator->gettext('HELLO AND WELCOME')?> </P>
 
     <!-- <P __('Thank You') </P> -->
-    <P> <?=$translator->gettext('Thank You')?> </P>
+    <!-- <P> $translator->gettext('Thank You')?> </P> -->
+    <P> <?=$translator->gettext('thank-you')?> </P>
+
+    <p> <?=sprintf($translator->gettext("Welcome, %s"), $name)?> </p>
+
+    <p> <?=sprintf($translator->ngettext("You have %d message", "You have %d messages", $count), $count)?> </p>
+    <!-- ngettext will decide wither to use plural or singular, you need to include  -->
+    <!-- the singular and plural message in poedit -->
 </body>
 
 </html>

@@ -22,20 +22,23 @@
   // putenv("LANG=$locale");
   // putenv("LANGUAGE=$locale"); //these tow lines if gettext didn't work
 
-  PhpMyAdmin\MoTranslator\Loader::loadFunctions();
+  // PhpMyAdmin\MoTranslator\Loader::loadFunctions();
   // setLocale(LC_ALL, $locale); //SET locale that php will use
-  _setLocale(LC_ALL, $locale);
+  // _setLocale(LC_ALL, $locale);
   $domain = "messages"; //this called translation domain
 
   // textdomain($domain); //this optional, because it's = messages by default
-  _textdomain($domain);
+  // _textdomain($domain);
 
   // bindtextdomain($domain, 'locales'); //tell gettext where translation messages are
-  _bindtextdomain($domain, 'locales');
+  // _bindtextdomain($domain, 'locales');
 
   // bind_textdomain_codeset($domain, 'UTF-8');
 
-  _bind_textdomain_codeset($domain, 'UTF-8');
+  // _bind_textdomain_codeset($domain, 'UTF-8');
+
+  $translator = new PhpMyAdmin\MoTranslator\Translator("locales/$locale.mo");
+
 ?>
 
 <!DOCTYPE html>
@@ -43,18 +46,22 @@
 
 <head>
     <meta charset="UTF-8">
-    <!-- <title> <?=gettext("Example")?> </title> -->
-    <title> <?=__("Example")?> </title>
+    <!-- <title> //=gettext("Example") </title> -->
+    <!-- <title>  //=__("Example") </title> -->
+    <title> <?=$translator->gettext("Example")?> </title>
 </head>
 
 <body>
-    <!-- <h1><?=_('Home')?></h1> -->
-    <h1><?=__('Home')?></h1>
+    <!-- <h1> //_('Home') </h1> -->
+    <!-- <h1> __('Home') </h1> -->
+    <h1><?=$translator->gettext('Home')?></h1>
 
-    <!-- <P> <?=_('HELLO AND WELCOME')?> </P> or with just _ -->
-    <P> <?=__('HELLO AND WELCOME')?> </P>
+    <!-- <P> _('HELLO AND WELCOME') </P> -->
+    <!-- <P> __('HELLO AND WELCOME') </P>  -->
+    <P> <?=$translator->gettext('HELLO AND WELCOME')?> </P>
 
-    <P> <?=__('Thank You')?> </P>
+    <!-- <P __('Thank You') </P> -->
+    <P> <?=$translator->gettext('Thank You')?> </P>
 </body>
 
 </html>

@@ -48,6 +48,11 @@
 
   $formatter = new NumberFormatter($locale, NumberFormatter::DECIMAL);
   $formatter->setAttribute(NumberFormatter::DECIMAL, 5); //DEFAULT IS 3
+
+  $timestamp = strtotime('20 JULY 1965');
+
+  $date_formatter = new IntlDateFormatter($locale, 1, 1);
+  $date_formatter->setPattern("EEEE, d MMMM Y");
 ?>
 
 <!DOCTYPE html>
@@ -82,6 +87,10 @@
     <p> <?=$pi?> </p>
     <!-- ABOVE first solution, bellow second solution  -->
     <p> <?=$formatter->format($pi)?> </p>
+
+    <p> <?=strftime("%A, %d %B %Y", $timestamp);?> </p>
+
+    <p> <?php $date_formatter->format($timestamp)?> </p>
 </body>
 
 </html>

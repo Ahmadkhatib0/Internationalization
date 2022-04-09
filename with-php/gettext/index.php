@@ -4,7 +4,7 @@
 
   require 'src/App/I18n.php';
   require 'vendor/autoload.php';
-  $i18n                     = new App\I18n(['en_US', 'en_GB', 'es']);
+  $i18n                     = new App\I18n(['en_US', 'en_GB', 'es', "es_ES"]);
   list($subdomain, $domain) = explode(".", $_SERVER['HTTP_HOST'], 2);
 
   //   convert en_gb or en-gb from the browser to => en_GB what php needs
@@ -65,6 +65,10 @@
     $content = "Content for $locale , not found ";
   }
 
+  $connection = new PDO('mysql:host=localhost;dbname=phpi18n;charset=utf8', 'root', "");
+  $sql        = "SELECT title_$locale AS title , description_$locale AS description , size FROM product";
+  $stmt       = $connection->query($sql);
+  $products   = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -105,6 +109,24 @@
     <p> <?php $date_formatter->format($timestamp)?> </p>
 
     <?php echo $content ?>
+
+    <table>
+        <thead>
+            <th><?=$translator->gettext('Title')?></th>
+            <th><?=$translator->gettext('Description')?></th>
+            <th><?=$translator->gettext('Size')?></th>
+        </thead>
+        <tbody>
+            <?php foreach ($products as $product): ?>
+            <tr>
+                <td> <?=$product['title']?> </td>
+                <td> <?=$product['description']?> </td>
+                <td> <?=$product['size']?> </td>
+            </tr>
+
+            <?php endforeach;?>
+        </tbody>
+    </table>
 </body>
 
 </html>

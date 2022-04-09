@@ -1,26 +1,7 @@
 <?php
-
-  use Symfony\Component\ExpressionLanguage\Parser;
-
-  require 'src/App/I18n.php';
   require 'vendor/autoload.php';
-  $i18n                     = new App\I18n(['en_US', 'en_GB', 'es', "es_ES"]);
-  list($subdomain, $domain) = explode(".", $_SERVER['HTTP_HOST'], 2);
 
-  //   convert en_gb or en-gb from the browser to => en_GB what php needs
-  $locale = $i18n->getBestMatch($subdomain);
-
-  $getBrowserLanguages = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
-  // print($i18n->getAcceptLocales());
-
-  if ($locale == null) {
-    $lang = $this->getLocaleForRedirect();
-    // exit;
-    $subdomain = substr($locale, 0, 2);
-    header("Location: http://" . $subdomain . ".localhost:3000/");
-    exit;
-  }
-
+  require "includes/i18n_init.php";
   // putenv("LANG=$locale");
   // putenv("LANGUAGE=$locale"); //these tow lines if gettext didn't work
 
@@ -38,9 +19,6 @@
   // bind_textdomain_codeset($domain, 'UTF-8');
 
   // _bind_textdomain_codeset($domain, 'UTF-8');
-
-  $translator = new PhpMyAdmin\MoTranslator\Translator("locales/$locale/LC_MESSAGES/messages.mo"); //or
-  // $translator = new PhpMyAdmin\MoTranslator\Translator("locales/$locale.mo");
 
   $name  = "Dave";
   $count = 1;
@@ -89,6 +67,7 @@
 </head>
 
 <body>
+    <?php require 'includes/lang_nav.php';?>
     <!-- <h1> //_('Home') </h1> -->
     <!-- <h1> __('Home') </h1> -->
     <h1><?=$translator->gettext('Home')?></h1>

@@ -1,5 +1,7 @@
 <?php
 
+  use Symfony\Component\ExpressionLanguage\Parser;
+
   require 'src/App/I18n.php';
   require 'vendor/autoload.php';
   $i18n                     = new App\I18n(['en_US', 'en_GB', 'es']);
@@ -54,9 +56,11 @@
   $date_formatter = new IntlDateFormatter($locale, 1, 1);
   $date_formatter->setPattern("EEEE, d MMMM Y");
 
-  $fileName = "content/body.$locale.html";
+  $fileName = "content/body.$locale.md";
   if (is_readable($fileName)) {
+    $parser  = new Parsedown;
     $content = file_get_contents($fileName);
+    $content = $parser->text($content);
   } else {
     $content = "Content for $locale , not found ";
   }

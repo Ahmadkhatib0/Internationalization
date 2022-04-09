@@ -53,6 +53,14 @@
 
   $date_formatter = new IntlDateFormatter($locale, 1, 1);
   $date_formatter->setPattern("EEEE, d MMMM Y");
+
+  $fileName = "content/body.$locale.html";
+  if (is_readable($fileName)) {
+    $content = file_get_contents($fileName);
+  } else {
+    $content = "Content for $locale , not found ";
+  }
+
 ?>
 
 <!DOCTYPE html>
@@ -91,6 +99,8 @@
     <p> <?=strftime("%A, %d %B %Y", $timestamp);?> </p>
 
     <p> <?php $date_formatter->format($timestamp)?> </p>
+
+    <?php echo $content ?>
 </body>
 
 </html>

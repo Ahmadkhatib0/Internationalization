@@ -1,12 +1,9 @@
 <nav>
-    <?php if ($locale == "en_GB"): ?>
-    English
+    <?php foreach ($link_data as $link): ?>
+    <?php if ($link['is_current']): ?>
+    <?=$link['label']?>
     <?php else: ?>
-    <a href="http://en_gb.localhost:3000/">English</a>
+    <a href="<?php echo $link['url'] ?>"><?=$link['label']?></a>
     <?php endif;?>
-    <?php if ($locale == 'es'): ?>
-    español
-    <?php else: ?>
-    <a href="http://es.localhost:3000/">español</a>
-    <?php endif;?>
+    <?php endforeach;?>
 </nav>

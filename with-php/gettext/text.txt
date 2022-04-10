@@ -1,1 +1,1 @@
-string(5) "en_GB"
+string(2) "es"

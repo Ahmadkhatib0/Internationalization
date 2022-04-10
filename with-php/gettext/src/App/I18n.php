@@ -75,15 +75,20 @@ class I18n {
   }
 
   public function getLocaleForRedirect() {
+    $locale = $this->getBestMatchFromCookies();
+    if ($locale !== null) {
+      return $locale;
+    }
     $locale = $this->getBestMatchFromHeader();
     if ($locale !== null) {
       return $locale;
     }
 
-    $locale = $this->getBestMatchFromIPAddress();
-    if (!$locale !== null) {
-      return $locale;
-    }
+    // $locale = $this->getBestMatchFromIPAddress();
+    // if (!$locale !== null) {
+    //   return $locale;
+    // }
+    return $this->getDefault();
   }
 
   public function getBestMatchFromIPAddress() {
@@ -97,6 +102,34 @@ class I18n {
     } catch (\ipinfo\ipinfo\IPinfoException $e) {
       echo $e->getMessage($e);
     }
+  }
+
+  public function getBestMatchFromCookies() {
+    if (isset($_COOKIE['locale'])) {
+      return $this->getBestMatch($_COOKIE['locale']);
+    }
+    return null;
+  }
+  public function getLinkData(array $languages) {
+    $protocol        = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+    $port            = $_SERVER['SERVER_PORT'] == "80" ? "" : ":{$_SERVER['SERVER_PORT']}";
+    $host_name_parts = explode('.', $_SERVER['HTTP_HOST'], 2);
+    $domain          = $port ? explode('.', $this->getRealHost(), 2)[1] : explode('.', $_SERVER['HTTP_HOST'], 2)[1];
+    $url             = $protocol . "://" . '%s.' . $domain . $port . $_SERVER['REQUEST_URI'];
+    $data            = [];
+    foreach ($languages as $code => $label) {
+      $data[] = [
+        'url'        => sprintf($url, $code),
+        'label'      => $label,
+        'is_current' => $code == $host_name_parts[0],
+      ];
+    }
+    return $data;
+  }
+
+  public function getRealHost() {
+    list($realHost) = explode(':', $_SERVER['HTTP_HOST']);
+    return $realHost;
   }
 }
 ?>
